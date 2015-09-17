@@ -1,0 +1,28 @@
+{
+  "name": "arcade-server",
+  "version": "1.0.0",
+  "description": "",
+  "main": "server.js",
+  "browser": "browser.js",
+  "scripts": {
+    "start": "node server.js",
+    "web": "budo example-browser.js --live"
+  },
+  "repository": {
+    "type": "git",
+    "url": "git+https://github.com/sethvincent/arcade-server.git"
+  },
+  "author": "sethvincent",
+  "license": "MIT",
+  "bugs": {
+    "url": "https://github.com/sethvincent/arcade-server/issues"
+  },
+  "homepage": "https://github.com/sethvincent/arcade-server#readme",
+  "dependencies": {
+    "socket.io": "^1.3.6",
+    "socket.io-client": "^1.3.6"
+  },
+  "devDependencies": {
+    "budo": "^4.2.1"
+  }
+}
