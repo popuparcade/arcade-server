@@ -47,14 +47,14 @@ function receiveGif (req, res) {
 
     file.on('end', function () {
       stream.end()
+      var url = 'http://10.0.0.4:4444/static/' + filename + '?rand=' + Math.random()
+      s.broadcast.emit('new-gif', url)
     })
   })
 
   busboy.on('finish', function () {
     res.writeHead('200')
     res.end()
-    var url = 'http://10.0.0.4:4444/static/' + filename + '?rand=' + Math.random()
-    s.broadcast.emit('new-gif', url)
   })
 
   req.pipe(busboy)
