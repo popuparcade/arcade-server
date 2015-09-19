@@ -54,7 +54,7 @@ function receiveGif (req, res) {
       for (var id in machines) {
         console.log(machines)
         if (id !== name) {
-          var url = 'http://172.17.18.119:4444/static/' + filename + '?rand=' + Math.random()
+          var url = 'http://172.20.10.2:4444/static/' + filename + '?rand=' + Math.random()
           console.log(io.to)
           console.log(machines[id])
           io.to(machines[id]).emit('new-gif', url)
