@@ -23,7 +23,9 @@ if (require.main === module) {
 
 var io = require('socket.io')(app)
 
+var s
 io.on('connection', function (socket) {
+  s = socket
   socket.on('move', function (player, position) {
     console.log(player, position)
     socket.broadcast.emit('move', player, position)
@@ -32,10 +34,8 @@ io.on('connection', function (socket) {
 
 function receiveGif (req, res) {
   var busboy = new Busboy({ headers: req.headers })
-  console.log(req.headers)
 
   busboy.on('file', function (fieldname, file, filename, encoding, mimetype) {
-    console.log(file, filename, encoding)
     var filepath = path.join(__dirname, 'static', filename)
     var stream = fs.createWriteStream(filepath, {
       flags: 'w'
@@ -53,6 +53,8 @@ function receiveGif (req, res) {
   busboy.on('finish', function () {
     res.writeHead('200')
     res.end()
+    var url = 'http://10.0.0.4:4444/static/' + filename + '?rand=' + Math.random()
+    s.broadcast.emit('new-gif', url)
   })
 
   req.pipe(busboy)
