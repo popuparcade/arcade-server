@@ -7,6 +7,7 @@ var serveStaticFiles = st({ path: __dirname + '/static', url: '/static' })
 var app = module.exports = require('http').createServer(function handler (req, res) {
   if (serveStaticFiles(req, res)) return
   if (req.method === 'POST' && req.url === '/gif') {
+    console.log('weeeeeeeeeeeeeeeeeee')
     receiveGif(req, res)
   } else {
     res.writeHead(200)
@@ -31,6 +32,7 @@ io.on('connection', function (socket) {
 
 function receiveGif (req, res) {
   var busboy = new Busboy({ headers: req.headers })
+  console.log(req.headers)
 
   busboy.on('file', function (fieldname, file, filename, encoding, mimetype) {
     console.log(file, filename, encoding)
@@ -52,4 +54,6 @@ function receiveGif (req, res) {
     res.writeHead('200')
     res.end()
   })
+
+  req.pipe(busboy)
 }
