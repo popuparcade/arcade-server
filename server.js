@@ -7,7 +7,6 @@ var serveStaticFiles = st({ path: __dirname + '/static', url: '/static' })
 var app = module.exports = require('http').createServer(function handler (req, res) {
   if (serveStaticFiles(req, res)) return
   if (req.method === 'POST' && req.url === '/gif') {
-    console.log('weeeeeeeeeeeeeeeeeee')
     receiveGif(req, res)
   } else {
     res.writeHead(200)
@@ -23,11 +22,14 @@ if (require.main === module) {
 
 var io = require('socket.io')(app)
 
-var s
+var machines = {}
 io.on('connection', function (socket) {
-  s = socket
+  socket.on('hello', function (id) {
+    machines[id] = socket.id
+    console.log(machines)
+  })
+
   socket.on('move', function (player, position) {
-    console.log(player, position)
     socket.broadcast.emit('move', player, position)
   })
 })
@@ -47,8 +49,17 @@ function receiveGif (req, res) {
 
     file.on('end', function () {
       stream.end()
-      var url = 'http://10.0.0.4:4444/static/' + filename + '?rand=' + Math.random()
-      s.broadcast.emit('new-gif', url)
+      var name = filename.split('-')[0]
+      console.log('wat', machines)
+      for (var id in machines) {
+        console.log(machines)
+        if (id !== name) {
+          var url = 'http://10.0.0.4:4444/static/' + filename + '?rand=' + Math.random()
+          console.log(io.to)
+          console.log(machines[id])
+          io.to(machines[id]).emit('new-gif', url)
+        }
+      }
     })
   })
 
