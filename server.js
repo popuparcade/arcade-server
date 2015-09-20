@@ -23,7 +23,7 @@ module.exports = function (options) {
   io.on('connection', function (socket) {
     socket.on('hello', function (id) {
       machines[id] = socket.id
-      console.log('connected:', machines[id])
+      console.log('connected:', id, machines[id])
     })
 
     socket.on('move', function (player, position) {
@@ -53,7 +53,7 @@ module.exports = function (options) {
         for (var id in machines) {
           if (id !== name) {
             var url = host + '/static/' + filename + '?rand=' + Math.random()
-            console.log('sending gif to:', machines[id])
+            console.log('sending gif to:', id, machines[id])
             io.to(machines[id]).emit('new-gif', url)
           }
         }
