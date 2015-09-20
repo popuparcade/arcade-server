@@ -77,5 +77,7 @@ module.exports = function (options) {
 
     req.pipe(busboy)
   }
+
+  return app
 }
 
