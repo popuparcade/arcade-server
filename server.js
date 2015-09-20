@@ -7,7 +7,7 @@ var serveStaticFiles = st({ path: __dirname + '/static', url: '/static' })
 module.exports = function (options) {
   var port = options.port || 4444
   var host = options.host || 'http://localhost:4444'
-  var app = module.exports = require('http').createServer(function handler (req, res) {
+  var app = require('http').createServer(function handler (req, res) {
     if (serveStaticFiles(req, res)) return
     if (req.method === 'POST' && req.url === '/gif') {
       receiveGif(req, res)
@@ -16,12 +16,6 @@ module.exports = function (options) {
       res.end('hi')
     }
   }, { serveClient: false })
-
-  if (require.main === module) {
-    app.listen(port, function () {
-      console.log('running on 4444')
-    })
-  }
 
   var io = require('socket.io')(app)
 
